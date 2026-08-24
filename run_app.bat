@@ -6,5 +6,5 @@ echo   Armenia, Quindio - Sensory Luxury & Digital Intimacy
 echo =============================================================
 echo Abriendo navegador en http://localhost:8505...
 start http://localhost:8505
-python server.py
+python local_server/server.py
 pause
