@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JD GROUP AXM · Nuestras Sedes en Armenia: Sede Mocawa y Sede Granada. Estudios cerrados bajo puerta, suites privadas, jacuzzis, domótica, insonorización y boutique de implementos.">
+    <title>Nuestras Sedes | JD GROUP AXM · Sede Mocawa & Sede Granada (Armenia)</title>
+    
+    <!-- Google Fonts: Cormorant Garamond + Plus Jakarta Sans + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Librerías de Inercia y Shaders WebGL -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+
+    <link rel="stylesheet" href="css/luxury.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏛️</text></svg>">
+</head>
+<body>
+
+    <!-- LIENZO WEBGL GLSL SHADERS (SISTEMA NERVIOSO VISUAL) -->
+    <canvas id="webglCanvas"></canvas>
+
+    <!-- MARCA DE AGUA / LOGO FIJO DE FONDO -->
+    <div class="body-fixed-logo-backdrop" aria-hidden="true">
+        <img src="public/imagenes/logo sin fondo.png" alt="" class="body-fixed-logo-img">
+    </div>
+
+    <!-- CURSOR NARRATIVO REFINADO -->
+    <div id="sensoryCursorDot" class="sensory-cursor-dot"></div>
+    <div id="sensoryCursorHalo" class="sensory-cursor-halo"></div>
+
+    <!-- PANTALLA DE CAMUFLAJE RÁPIDO (ESC) -->
+    <div id="camouflageScreen" class="camouflage-screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E5E7EB; padding-bottom: 16px; margin-bottom: 30px;">
+            <h2 style="font-size: 1.2rem; color: #1F2937; font-family: sans-serif;">Portal Corporativo · Gestión de Proyectos & Auditoría</h2>
+            <button onclick="toggleCamouflage(false)" style="background: #111827; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-family: sans-serif;">Reanudar Navegación</button>
+        </div>
+        <p style="color: #4B5563; font-family: sans-serif; font-size: 0.95rem;">Panel de control administrativo y revisión de balances financieros y cronogramas operativos.</p>
+    </div>
+
+    <!-- 0. BARRA SUPERIOR STEALTH PRIVACY -->
+    <div class="stealth-top-bar">
+        <div class="stealth-left">
+            <span class="status-dot-serene"></span>
+            <span>JD GROUP · INSTALACIONES FÍSICAS EN ARMENIA · GEOBLOQUEO NACIONAL ACTIVO</span>
+        </div>
+        <button class="btn-panic-stealth" onclick="toggleCamouflage(true)">Camuflaje Rápido (ESC)</button>
+    </div>
+
+                <!-- 1. NAVBAR — JD GROUP (SOLO LOGO) -->
+    <header class="house-navbar" id="mainNavbar">
+        <div class="navbar-inner">
+            <a href="index.html" class="brand-wordmark">
+                <img src="public/imagenes/logo sin fondo.png" alt="JD GROUP Logo" class="navbar-brand-logo">
+            </a>
+
+            <ul class="nav-links-menu">
+                <li><a href="index.html#manifesto">Nosotros</a></li>
+                <li><a href="index.html#the-craft">Tips</a></li>
+                <li><a href="index.html#the-experience">Experiencia</a></li>
+                <li><a href="index.html#privacy">Privacidad</a></li>
+            </ul>
+
+            <div style="display: flex; align-items: center; gap: 28px;">
+                <a href="modelos.html" class="nav-text-link magnetic-element">Modelos Top</a>
+                <a href="sedes.html" class="nav-text-link active magnetic-element">Nuestras Sedes</a>
+                <button onclick="openApplicationModal()" class="nav-cta-btn magnetic-element">Postularse</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- HERO DE SEDES -->
+        <section class="manifesto-section" style="padding-top: 180px; padding-bottom: 80px;">
+            <div class="manifesto-container scroll-reveal">
+                <h1 class="section-heading-serif" style="font-size: 3.6rem; margin: 16px 0 24px;">
+                    Sede Mocawa & Sede Granada
+                </h1>
+                <p class="manifesto-note" style="max-width: 780px;">
+                    En ambas sedes encuentras el mismo equipamiento de lujo: estudios cerrados y bajo puerta, suites privadas con jacuzzi, insonorización y domótica. Cada espacio se puede personalizar y adaptar al estilo de cada modelo con sus propios elementos.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE SEDES CON SELECTOR Y GALERÍA SPLIT -->
+        <section class="house-spaces-section" style="padding-top: 30px;">
+            <!-- SELECTOR LIMPIO DE SEDES (SIN LETRAS PEQUEÑAS) -->
+            <div class="sede-tabs-container scroll-reveal">
+                <button id="tabSedeMocawa" class="sede-tab-button active" onclick="switchSedeView('mocawa')">
+                    <span class="sede-tab-name">SEDE MOCAWA</span>
+                </button>
+                <button id="tabSedeGranada" class="sede-tab-button" onclick="switchSedeView('granada')">
+                    <span class="sede-tab-name">SEDE GRANADA</span>
+                </button>
+            </div>
+
+            <!-- ======================================================= -->
+            <!-- PANEL 1: SEDE MOCAWA                                    -->
+            <!-- ======================================================= -->
+            <div id="sedeMocawaContent" class="sede-view-panel active">
+                <div class="sede-gallery-split scroll-reveal">
+                    <!-- Columna Izquierda: Galería Interactiva (Imagen Grande + 4 Miniaturas) -->
+                    <div class="sede-interactive-gallery">
+                        <div class="sede-main-display">
+                            <img id="mocawaMainImg" src="https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?q=80&w=1200" alt="Sede Mocawa - Vista Principal" class="sede-main-img">
+                            <div id="mocawaMainCaption" class="sede-main-caption">01 · ACCESO CONFIDENCIAL & RECEPCIÓN DISCRETA</div>
+                        </div>
+                        <div class="sede-thumbs-row">
+                            <button class="sede-thumb-btn active" onclick="changeSedeGalleryImage('mocawa', 0, 'https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?q=80&w=1200', '01 · ACCESO CONFIDENCIAL & RECEPCIÓN DISCRETA')">
+                                <img src="https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?q=80&w=400" alt="Thumb Mocawa 1" class="sede-thumb-img">
+                            </button>
+                            <button class="sede-thumb-btn" onclick="changeSedeGalleryImage('mocawa', 1, 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1200', '02 · SUITE VELVET & JACUZZI PRIVADO')">
+                                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=400" alt="Thumb Mocawa 2" class="sede-thumb-img">
+                            </button>
+                            <button class="sede-thumb-btn" onclick="changeSedeGalleryImage('mocawa', 2, 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=1200', '03 · SUITE MODERNA & LUZ EDITORIAL 5600K')">
+                                <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=400" alt="Thumb Mocawa 3" class="sede-thumb-img">
+                            </button>
+                            <button class="sede-thumb-btn" onclick="changeSedeGalleryImage('mocawa', 3, 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1200', '04 · SUITE EJECUTIVA & TOCADOR VIP')">
+                                <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=400" alt="Thumb Mocawa 4" class="sede-thumb-img">
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha: Información Detallada -->
+                    <div class="sede-info-column">
+                        <h2 class="section-heading-serif" style="font-size: 2.4rem; margin: 8px 0 16px;">Sede Mocawa</h2>
+                        <p style="font-size: 1.02rem; color: var(--color-stone); line-height: 1.7; margin-bottom: 24px;">
+                            Ubicada en la exclusiva zona norte corporativa de Armenia. Estudio 100% cerrado y bajo puerta con cero avisos exteriores ni ventanas expuestas para garantizar total reserva y anonimato.
+                        </p>
+
+                        <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px;">
+                            <div style="border-left: 2px solid var(--color-champagne); padding-left: 14px;">
+                                <strong style="color: var(--color-ivory); display: block; font-size: 0.95rem;">Turnos Diurnos & Tardes:</strong>
+                                <span style="font-size: 0.88rem; color: var(--color-stone);">Horarios estratégicos optimizados para conectar con audiencias europeas y estadounidenses.</span>
+                            </div>
+                            <div style="border-left: 2px solid var(--color-champagne); padding-left: 14px;">
+                                <strong style="color: var(--color-ivory); display: block; font-size: 0.95rem;">Suites 100% Personalizables:</strong>
+                                <span style="font-size: 0.88rem; color: var(--color-stone);">Cada habitación cuenta con jacuzzi privado y puede decorarse al estilo único de cada modelo con sus accesorios.</span>
+                            </div>
+                            <div style="border-left: 2px solid var(--color-champagne); padding-left: 14px;">
+                                <strong style="color: var(--color-ivory); display: block; font-size: 0.95rem;">Boutique en el Estudio:</strong>
+                                <span style="font-size: 0.88rem; color: var(--color-stone);">Disponibilidad inmediata de dildos, vibradores interactivos (Lovense), lubricantes y lencería.</span>
+                            </div>
+                        </div>
+
+                        <button onclick="openApplicationModal()" class="btn-submit-interview magnetic-element" style="margin-top: 0; width: 100%;">
+                            Postularme para Sede Mocawa
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================= -->
+            <!-- PANEL 2: SEDE GRANADA                                   -->
+            <!-- ======================================================= -->
+            <div id="sedeGranadaContent" class="sede-view-panel" style="display: none;">
+                <div class="sede-gallery-split scroll-reveal">
+                    <!-- Columna Izquierda: Galería Interactiva (Imagen Grande + 4 Miniaturas) -->
+                    <div class="sede-interactive-gallery">
+                        <div class="sede-main-display">
+                            <img id="granadaMainImg" src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1200" alt="Sede Granada - Vista Principal" class="sede-main-img">
+                            <div id="granadaMainCaption" class="sede-main-caption">01 · ENTRADA PRIVADA BAJO PUERTA</div>
+                        </div>
+                        <div class="sede-thumbs-row">
+                            <button class="sede-thumb-btn active" onclick="changeSedeGalleryImage('granada', 0, 'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1200', '01 · ENTRADA PRIVADA BAJO PUERTA')">
+                                <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=400" alt="Thumb Granada 1" class="sede-thumb-img">
+                            </button>
+                            <button class="sede-thumb-btn" onclick="changeSedeGalleryImage('granada', 1, 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200', '02 · SET NEÓN TECH & DINÁMICAS VIP')">
+                                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=400" alt="Thumb Granada 2" class="sede-thumb-img">
+                            </button>
+                            <button class="sede-thumb-btn" onclick="changeSedeGalleryImage('granada', 2, 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=1200', '03 · SUITE SPA EN MÁRMOL & JACUZZI')">
+                                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=400" alt="Thumb Granada 3" class="sede-thumb-img">
+                            </button>
+                            <button class="sede-thumb-btn" onclick="changeSedeGalleryImage('granada', 3, 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?q=80&w=1200', '04 · SUITE CÁLIDA EN MADERA & LINO')">
+                                <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?q=80&w=400" alt="Thumb Granada 4" class="sede-thumb-img">
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha: Información Detallada -->
+                    <div class="sede-info-column">
+                        <h2 class="section-heading-serif" style="font-size: 2.4rem; margin: 8px 0 16px;">Sede Granada</h2>
+                        <p style="font-size: 1.02rem; color: var(--color-stone); line-height: 1.7; margin-bottom: 24px;">
+                            Ubicada en una zona tradicional, tranquila y de fácil acceso discreto. Estudio moderno cerrado bajo puerta con sets de vanguardia, domótica reactiva y jacuzzis privados.
+                        </p>
+
+                        <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px;">
+                            <div style="border-left: 2px solid var(--color-champagne); padding-left: 14px;">
+                                <strong style="color: var(--color-ivory); display: block; font-size: 0.95rem;">Turno Nocturno Disponible:</strong>
+                                <span style="font-size: 0.88rem; color: var(--color-stone);">En Sede Granada dispones de horarios nocturnos para capturar el mayor gasto de usuarios globales.</span>
+                            </div>
+                            <div style="border-left: 2px solid var(--color-champagne); padding-left: 14px;">
+                                <strong style="color: var(--color-ivory); display: block; font-size: 0.95rem;">Tecnología 4K & Domótica:</strong>
+                                <span style="font-size: 0.88rem; color: var(--color-stone);">Cámaras de cine a 60 FPS, microfonía direccional Shure y barras LED sincronizadas con el chat.</span>
+                            </div>
+                            <div style="border-left: 2px solid var(--color-champagne); padding-left: 14px;">
+                                <strong style="color: var(--color-ivory); display: block; font-size: 0.95rem;">Boutique & Accesorios:</strong>
+                                <span style="font-size: 0.88rem; color: var(--color-stone);">Todo tipo de implementos, vibradores interactivos, dildos y vestuario disponible en el estudio.</span>
+                            </div>
+                        </div>
+
+                        <button onclick="openApplicationModal()" class="btn-submit-interview magnetic-element" style="margin-top: 0; width: 100%;">
+                            Postularme para Sede Granada
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOUTIQUE DE IMPLEMENTOS & JUGUETES -->
+        <section class="toys-boutique-block scroll-reveal">
+            <div class="section-editorial-title-row">
+                <div>
+                    <h2 class="section-heading-serif">Todo para tu Sesión en un Solo Lugar</h2>
+                </div>
+                <p style="max-width: 480px;">
+                    En JD GROUP no necesitas buscar implementos por fuera. Contamos con una boutique completa en el estudio con todo tipo de accesorios profesionales para elevar tu interacción y facturación.
+                </p>
+            </div>
+
+            <div class="toys-grid-4">
+                <div class="toy-card">
+                    <span class="toy-icon">⚡</span>
+                    <h4 class="toy-title">Juguetes Interactivos</h4>
+                    <p class="toy-desc">Lovense Lush, Domi, Nora y dispositivos bluetooth sincronizados en tiempo real con las propinas de tus espectadores.</p>
+                </div>
+                <div class="toy-card">
+                    <span class="toy-icon">💎</span>
+                    <h4 class="toy-title">Dildos & Vibradores VIP</h4>
+                    <p class="toy-desc">Variedad de formas, tamaños y texturas en silicona de grado médico hipoalergénica para shows privados de alta gama.</p>
+                </div>
+                <div class="toy-card">
+                    <span class="toy-icon">✨</span>
+                    <h4 class="toy-title">Estimulantes & Cuidado</h4>
+                    <p class="toy-desc">Lubricantes a base de agua de alta calidad, estimulantes, aceites para masajes y productos de higiene profesional.</p>
+                </div>
+                <div class="toy-card">
+                    <span class="toy-icon">👑</span>
+                    <h4 class="toy-title">Lencería & Estilismo</h4>
+                    <p class="toy-desc">Conjuntos boudoir, lencería de satén y encaje, batas, máscaras y accesorios de vestuario para crear tu personaje artístico.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL EMERGENTE DE POSTULACIÓN CONFIDENCIAL (SPLIT LAYOUT) -->
+    <div id="applicationModal" class="application-modal-overlay" onclick="if(event.target === this) closeApplicationModal()">
+        <div class="application-modal-dialog">
+            <button class="modal-close-btn" onclick="closeApplicationModal()" title="Cerrar (ESC)">×</button>
+
+            <div class="modal-split-layout">
+                <!-- Columna Izquierda: Video de Oportunidad Laboral -->
+                <div class="modal-video-col">
+                    <div class="video-reel-card">
+                        <div class="video-reel-container" style="height: 440px;">
+                            <video class="reel-video-element" loop playsinline preload="metadata">
+                                <source src="public/videos/Estás en busca de una oportunidad laboral que cumpla tus expectativas 🤓¿Agendamos una entrevist.mp4" type="video/mp4">
+                            </video>
+                            <button class="btn-reel-play" onclick="toggleReelPlay(this)">
+                                <span class="play-icon">▶</span>
+                            </button>
+                        </div>
+                        <div class="video-reel-meta" style="padding: 16px 0 0;">
+                            <h4 class="reel-title" style="font-size: 1.15rem;">¿Agendamos una Entrevista?</h4>
+                            <p class="reel-desc" style="font-size: 0.85rem;">Conoce nuestras instalaciones en Armenia y da el primer paso hacia tu independencia.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Formulario Confidencial -->
+                <div class="modal-form-col">
+                    <h2 class="app-title-center" style="font-size: 2.1rem; text-align: left; margin-bottom: 8px;">Postulación Confidencial</h2>
+                    <p class="app-subtitle-center" style="font-size: 0.95rem; text-align: left; margin-bottom: 28px;">Proceso seguro, privado y sin discriminación en Armenia.</p>
+
+                    <form id="houseApplicationForm" onsubmit="handleHouseSubmit(event)">
+                        <div class="app-input-row-2">
+                            <div>
+                                <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">Nombre o Alias *</label>
+                                <input type="text" id="appNombre" class="app-input-field" placeholder="Ej: Isabella / Mateo" required>
+                            </div>
+                            <div>
+                                <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">WhatsApp de Contacto *</label>
+                                <input type="tel" id="appWhatsapp" class="app-input-field" placeholder="Ej: +57 300 123 4567" required>
+                            </div>
+                        </div>
+
+                        <div class="app-input-row-2">
+                            <div>
+                                <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">Edad Confirmada (+18) *</label>
+                                <input type="number" id="appEdad" class="app-input-field" min="18" max="60" value="21" required>
+                            </div>
+                            <div>
+                                <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">Identidad / Categoría *</label>
+                                <select id="appCategoria" class="app-input-field">
+                                    <option value="Mujer">Talento Femenino (Mujer)</option>
+                                    <option value="Hombre">Talento Masculino (Hombre)</option>
+                                    <option value="Trans">Talento Trans / No Binario</option>
+                                    <option value="Pareja">Pareja / Diversidad</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="app-input-row-2">
+                            <div>
+                                <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">Ciudad</label>
+                                <select id="appCiudad" class="app-input-field">
+                                    <option value="Armenia">Armenia</option>
+                                    <option value="Calarcá">Calarcá</option>
+                                    <option value="Circasia">Circasia</option>
+                                    <option value="Pereira">Pereira</option>
+                                    <option value="Manizales">Manizales</option>
+                                    <option value="Otra">Otra (Eje Cafetero)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">Experiencia Previa</label>
+                                <select id="appExperiencia" class="app-input-field">
+                                    <option value="Sin Experiencia">No, quiero empezar desde cero</option>
+                                    <option value="Con Experiencia">Sí, ya he transmitido antes</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 18px;">
+                            <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">Preguntas o Comentarios</label>
+                            <textarea id="appComentarios" class="app-input-field" rows="2" placeholder="Dudas sobre horarios, porcentajes, sedes o acompañamiento..."></textarea>
+                        </div>
+
+                        <!-- CHECKBOX LUXURY PERSONALIZADO -->
+                        <div class="luxury-habeas-container">
+                            <label class="luxury-checkbox-label">
+                                <input type="checkbox" id="appHabeas" required class="luxury-checkbox-input">
+                                <span class="luxury-checkbox-custom"></span>
+                                <span class="luxury-checkbox-text">
+                                    Autorizo el tratamiento confidencial de mis datos personales conforme a la <strong>Ley 1581 de 2012 (Habeas Data)</strong>. Confirmo que soy mayor de 18 años.
+                                </span>
+                            </label>
+                        </div>
+
+                        <button type="submit" id="btnSubmitApp" class="btn-submit-interview magnetic-element" style="margin-top: 0; padding: 16px;">
+                            Solicitar Entrevista Confidencial
+                        </button>
+                    </form>
+
+                    <!-- Feedback de Radicado -->
+                    <div id="appSuccessVoucher" style="display: none; text-align: center; padding-top: 20px;">
+                        <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-champagne); letter-spacing: 2px;">CÓDIGO DE RADICADO PRIVADO</span>
+                        <h3 id="lblAppRadicado" style="font-family: var(--font-mono); font-size: 1.9rem; color: var(--color-ivory); margin: 6px 0 14px;">AXM-000000</h3>
+                        <p style="color: var(--color-stone); font-size: 0.9rem; margin-bottom: 18px;">Tu solicitud ha sido registrada de forma segura. Te contactaremos con total reserva.</p>
+                        <a id="btnAppWa" href="#" target="_blank" class="nav-cta-btn magnetic-element" style="display: inline-block; padding: 12px 24px;">Iniciar Chat en WhatsApp Concierge</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- FOOTER & PRIVATE CONCIERGE -->
+    <footer class="house-footer">
+        <p class="footer-bottom-copy">
+            © 2026 JD GROUP AXM. TODOS LOS DERECHOS RESERVADOS.
+        </p>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <!-- BOTÓN FLOTANTE SOCIAL SPEED-DIAL (REDES SOCIALES) -->
+    <div class="floating-social-hub" id="floatingSocialHub">
+        <div class="social-popout-menu">
+            <!-- WhatsApp (Verde Oficial) -->
+            <a href="https://wa.me/573001234567" target="_blank" rel="noopener" class="social-sub-btn btn-social-wa" title="WhatsApp Concierge">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.587 1.961.947 3.03.947h.005c3.182 0 5.767-2.586 5.768-5.766 0-1.54-.599-2.988-1.688-4.077-1.09-1.089-2.538-1.688-4.319-1.688zm9.969 5.766c0 5.514-4.486 10-10 10-1.748 0-3.387-.45-4.818-1.238l-4.782 1.252 1.275-4.661c-.868-1.488-1.375-3.224-1.375-5.053 0-5.514 4.486-10 10-10s10 4.486 10 10z"/>
+                </svg>
+            </a>
+            <!-- Instagram (Gradiente Oficial) -->
+            <a href="https://instagram.com/jdgroupaxm" target="_blank" rel="noopener" class="social-sub-btn btn-social-ig" title="Instagram Oficial">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+            </a>
+            <!-- TikTok (Cian / Magenta Oficial) -->
+            <a href="https://tiktok.com/@jdgroupaxm" target="_blank" rel="noopener" class="social-sub-btn btn-social-tt" title="TikTok Oficial">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-1.01v8.86c0 1.75-.43 3.51-1.39 4.95-1.33 2.01-3.64 3.32-6.07 3.5-1.89.15-3.83-.34-5.41-1.4-2.02-1.37-3.26-3.66-3.44-6.07-.22-2.91 1.25-5.83 3.75-7.3 1.34-.78 2.92-1.18 4.47-1.17v4.07c-1.08-.04-2.2.32-3 1.05-.88.8-1.35 1.99-1.28 3.17.06 1.18.66 2.29 1.63 2.96.98.68 2.27.84 3.42.44 1.03-.36 1.87-1.24 2.19-2.27.18-.58.26-1.19.26-1.8V.02z"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Botón Disparador Principal -->
+        <button class="social-main-trigger" aria-label="Abrir Redes Sociales">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+        </button>
+    </div>
+
+</body>
+</html>

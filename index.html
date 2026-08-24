@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JD GROUP AXM · Estudio & Productora Audiovisual Webcam en Armenia, Quindío. Máxima privacidad, sedes de lujo, mentoría y proyección internacional.">
+    <title>JD GROUP AXM · Productora Profesional Webcam | Armenia, Quindío</title>
+    
+    <!-- Google Fonts: Cormorant Garamond + Plus Jakarta Sans + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Librerías de Inercia y Shaders WebGL -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+
+    <link rel="stylesheet" href="css/luxury.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏛️</text></svg>">
+</head>
+<body>
+
+    <!-- GATE DE VERIFICACIÓN DE MAYORÍA DE EDAD (+18) -->
+    <div id="ageGateModal" class="age-gate-overlay">
+        <div class="age-gate-card">
+            <img src="public/imagenes/logo sin fondo.png" alt="JD GROUP Logo" class="age-gate-logo">
+            <span class="age-gate-badge">ACCESO RESTRINGIDO · CONTENIDO EXCLUSIVO +18</span>
+            <h2 class="age-gate-title">Confirmación de Mayoría de Edad</h2>
+            <p class="age-gate-desc">
+                Este portal contiene información corporativa, material fotográfico y contenidos destinados exclusivamente a personas mayores de 18 años conforme a la legislación de la República de Colombia y normas internacionales.
+            </p>
+            <div class="age-gate-actions">
+                <button onclick="confirmAge()" class="btn-age-confirm magnetic-element">Soy Mayor de 18 Años (Ingresar)</button>
+                <button onclick="rejectAge()" class="btn-age-reject magnetic-element">Soy Menor de Edad (Salir)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIENZO WEBGL GLSL SHADERS (SISTEMA NERVIOSO VISUAL) -->
+    <canvas id="webglCanvas"></canvas>
+
+    <!-- MARCA DE AGUA / LOGO FIJO DE FONDO -->
+    <div class="body-fixed-logo-backdrop" aria-hidden="true">
+        <img src="public/imagenes/logo sin fondo.png" alt="" class="body-fixed-logo-img">
+    </div>
+
+    <!-- CURSOR NARRATIVO REFINADO -->
+    <div id="sensoryCursorDot" class="sensory-cursor-dot"></div>
+    <div id="sensoryCursorHalo" class="sensory-cursor-halo"></div>
+
+    <!-- PANTALLA DE CAMUFLAJE RÁPIDO (ESC) -->
+    <div id="camouflageScreen" class="camouflage-screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E5E7EB; padding-bottom: 16px; margin-bottom: 30px;">
+            <h2 style="font-size: 1.2rem; color: #1F2937; font-family: sans-serif;">Portal Corporativo · Gestión de Proyectos & Auditoría</h2>
+            <button onclick="toggleCamouflage(false)" style="background: #111827; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-family: sans-serif;">Reanudar Navegación</button>
+        </div>
+        <p style="color: #4B5563; font-family: sans-serif; font-size: 0.95rem;">Panel de control administrativo y revisión de balances financieros y cronogramas operativos.</p>
+    </div>
+
+    <!-- 0. BARRA SUPERIOR STEALTH PRIVACY -->
+    <div class="stealth-top-bar">
+        <div class="stealth-left">
+            <span class="status-dot-serene"></span>
+            <span>JD GROUP · PRODUCTORA WEBCAM PROFESIONAL · ARMENIA, QUINDÍO · GEOBLOQUEO ACTIVO</span>
+        </div>
+        <button class="btn-panic-stealth" onclick="toggleCamouflage(true)">Camuflaje Rápido (ESC)</button>
+    </div>
+
+    <!-- 1. NAVBAR — JD GROUP (LOGO PROMINENTE & MÁRGENES EQUILIBRADOS) -->
+    <header class="house-navbar" id="mainNavbar">
+        <div class="navbar-inner">
+            <a href="index.html" class="brand-wordmark" title="JD GROUP Home">
+                <img src="public/imagenes/logo sin fondo.png" alt="JD GROUP Logo" class="navbar-brand-logo">
+            </a>
+
+            <ul class="nav-links-menu">
+                <li><a href="#manifesto">Nosotros</a></li>
+                <li><a href="#the-craft">Tips</a></li>
+                <li><a href="#the-experience">Experiencia</a></li>
+                <li><a href="#privacy">Privacidad</a></li>
+            </ul>
+
+            <div style="display: flex; align-items: center; gap: 28px;">
+                <a href="modelos.html" class="nav-text-link magnetic-element">Modelos Top</a>
+                <a href="sedes.html" class="nav-text-link magnetic-element">Nuestras Sedes</a>
+                <button onclick="openApplicationModal()" class="nav-cta-btn magnetic-element">Postularse</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ======================================================= -->
+        <!-- ACTO I — ARRIVAL: HERO CINEMATOGRÁFICO (IMAGEN SIMPLE)  -->
+        <!-- ======================================================= -->
+        <section class="hero-breathing-stage" id="actArrival">
+            <!-- Plano 01: Imagen Hero Simple Ultra HD -->
+            <div class="hero-image-wrapper">
+                <img src="public/imagenes/hero simple.jpg" alt="JD GROUP Hero Ultra HD" class="hero-static-image">
+            </div>
+
+            <!-- Plano 02: Luz Atmosférica Respiratoria (Haze Champagne) -->
+            <div class="hero-plane-light" id="heroPlaneLight"></div>
+
+            <!-- Plano 03: Viñeta Dinámica de Enfoque y Contraste Editorial -->
+            <div class="hero-plane-vignette"></div>
+
+            <!-- Plano 04: Tipografía Monumental Estable (Máxima Claridad) -->
+            <div class="hero-cinematic-inner scroll-reveal">
+                <h1 class="hero-monumental-headline">
+                    Impulsamos tu talento<br><em>sin límites ni etiquetas.</em>
+                </h1>
+                <p class="hero-subline-editorial">
+                    Productora profesional de modelaje webcam en el Eje Cafetero. Crecimiento real para mujeres, hombres y personas trans en un espacio de máxima privacidad, producción de cine y libertad financiera.
+                </p>
+                <a href="#manifesto" class="hero-action-link magnetic-element" id="btnEnterHouse">
+                    Conocer JD GROUP <span>↓</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- ACTO II — NOSOTROS: 6 AÑOS & OWNERS (SÓLIDA / SWEEP)    -->
+        <!-- ======================================================= -->
+        <section id="manifesto" class="manifesto-section section-solid section-loader-sweep" style="padding-top: 130px; padding-bottom: 120px;">
+            <div class="manifesto-container scroll-reveal">
+                
+                <div class="anniversary-split-container">
+                    <!-- Columna Izquierda: Foto Owners Real (Nítida y Completa) -->
+                    <div class="anniversary-owners-col scroll-reveal delay-1">
+                        <img src="public/imagenes/owner.png" onerror="this.src='public/imagenes/owner.jpg.png'" alt="JD GROUP Owners & Founders" class="anniversary-owners-img">
+                    </div>
+
+                    <!-- Columna Derecha: Texto + Nueva Foto Horizontal del Equipo -->
+                    <div class="anniversary-content-col scroll-reveal delay-2">
+                        <h2 class="section-heading-serif anniversary-interactive-text" style="font-size: 3.2rem; margin-bottom: 16px;">6 Años de Trayectoria</h2>
+                        <p class="anniversary-lead" style="margin-bottom: 24px;">
+                            Más de media década consolidando a los mejores creadores de contenido para adultos en Armenia, garantizando solvencia, seguridad y bienestar integral.
+                        </p>
+
+                        <!-- NUEVA FOTO HORIZONTAL ADAPTADA A LA ESTÉTICA -->
+                        <div class="anniversary-team-horizontal-card">
+                            <img src="public/imagenes/aniversario6.jpg" alt="Celebración 6 Años JD GROUP Equipo de Trabajo" class="anniversary-team-horizontal-img">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- ACTO III — TIPS & MENTORÍA + FAQ (TRANSPARENTE / SWEEP) -->
+        <!-- ======================================================= -->
+        <section id="the-craft" class="craft-editorial-section section-transparent section-loader-sweep" style="padding-top: 120px; padding-bottom: 120px;">
+            <div class="section-editorial-title-row scroll-reveal" style="max-width: 1440px; margin: 0 auto 64px;">
+                <div>
+                    <h2 class="section-heading-serif">Tips & Mentoría</h2>
+                </div>
+                <p style="max-width: 480px;">Estrategia técnica, dirección artística, atmósfera sonora y resolución directa de dudas frecuentes.</p>
+            </div>
+
+            <div class="craft-grid-3">
+                <div class="craft-card scroll-reveal delay-1">
+                    <h3>Producción & Fotografía Editorial</h3>
+                    <p>Producción periódica con óptica cinematográfica, estilismo profesional y asesoría en los mejores ángulos de cámara y música estratégica para captar audiencias globales.</p>
+                </div>
+                <div class="craft-card scroll-reveal delay-2">
+                    <h3>Acompañamiento & Bienestar</h3>
+                    <p>Monitores capacitados que actúan como apoyo psicológico constante, talleres de autocuidado, manejo emocional y bienestar para que transmitas siempre con seguridad.</p>
+                </div>
+                <div class="craft-card scroll-reveal delay-3">
+                    <h3>Estrategia Multiplataforma</h3>
+                    <p>Estrategia integral en plataformas Freemium (Chaturbate, Stripchat), Privadas (LiveJasmin, Streamate) y Fan Clubs (OnlyFans, Fansly), con pagos puntuales quincenales en divisas.</p>
+                </div>
+            </div>
+
+            <!-- GESTIÓN MUSICAL ESTRATÉGICA -->
+            <div class="music-strategy-block scroll-reveal">
+                <div class="music-header-row">
+                    <div>
+                        <h3 class="music-block-title">Estrategia Sonora en la Transmisión</h3>
+                    </div>
+                    <p style="max-width: 480px;">La música es el puente invisible que evita la monotonía, marca la identidad de tu sala y prolonga el tiempo de permanencia de los usuarios.</p>
+                </div>
+
+                <div class="music-moods-grid">
+                    <div class="music-card scroll-reveal delay-1">
+                        <h4 class="music-mood-name">Chill / Relajante</h4>
+                        <p class="music-mood-desc">Ideal para momentos pausados, bienvenida a nuevos usuarios y charlas íntimas que generan cercanía.</p>
+                    </div>
+                    <div class="music-card scroll-reveal delay-2">
+                        <h4 class="music-mood-name">Sensual & Boudoir</h4>
+                        <p class="music-mood-desc">Diseñada para elevar la tensión, conexión íntima y transiciones hacia shows privados de alto valor.</p>
+                    </div>
+                    <div class="music-card scroll-reveal delay-3">
+                        <h4 class="music-mood-name">Dance / Energética</h4>
+                        <p class="music-mood-desc">Dinamiza la sala en horas pico, despierta la interacción colectiva e incentiva el envío constante de propinas.</p>
+                    </div>
+                    <div class="music-card scroll-reveal delay-4">
+                        <h4 class="music-mood-name">Variada & Rotativa</h4>
+                        <p class="music-mood-desc">Rotación periódica de playlists para evitar la fatiga auditiva y mantener frescura ante tus seguidores frecuentes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CÁPSULAS EN VIDEO NATIVAS VERTICALES 9:16 (4 VIDEOS CON TRANSICIÓN SUAVIZADA) -->
+            <div class="mentorship-videos-block scroll-reveal">
+                <div class="music-header-row" style="margin-bottom: 40px;">
+                    <div>
+                        <h3 class="music-block-title">Aprende con Nuestro Equipo</h3>
+                    </div>
+                    <p style="max-width: 440px;">Consejos reales y respuesta directa a las situaciones del modelaje digital profesional.</p>
+                </div>
+
+                <div class="video-reels-grid">
+                    <!-- Video Reel 1: Acompañamiento -->
+                    <div class="video-reel-card scroll-reveal delay-1">
+                        <div class="video-reel-container">
+                            <video class="reel-video-element" loop playsinline preload="metadata">
+                                <source src="public/videos/El acompañamiento es parte del valor agregado en nuestro equipo 🔥, aquí todo el tiempo nos tend.mp4" type="video/mp4">
+                            </video>
+                            <button class="btn-reel-play" onclick="toggleReelPlay(this)">
+                                <span class="play-icon">▶</span>
+                            </button>
+                            <button class="btn-reel-sound-toggle" onclick="toggleReelSound(this)" title="Activar sonido">🔇</button>
+                        </div>
+                        <div class="video-reel-meta" style="padding: 16px 0 0; background: transparent; border: none;">
+                            <h4 class="reel-title" style="font-size: 1.12rem; margin-bottom: 4px;">El Acompañamiento Real</h4>
+                            <p class="reel-desc" style="font-size: 0.86rem;">En JD GROUP nunca estás en soledad; nuestro equipo de monitores está contigo en cada paso.</p>
+                        </div>
+                    </div>
+
+                    <!-- Video Reel 2: Errores Comunes -->
+                    <div class="video-reel-card scroll-reveal delay-2">
+                        <div class="video-reel-container">
+                            <video class="reel-video-element" loop playsinline preload="metadata">
+                                <source src="public/videos/Seguramente estás cometiendo estos errores y no sabías 🧐¿Cometías alguno de estos 🤨.mp4" type="video/mp4">
+                            </video>
+                            <button class="btn-reel-play" onclick="toggleReelPlay(this)">
+                                <span class="play-icon">▶</span>
+                            </button>
+                            <button class="btn-reel-sound-toggle" onclick="toggleReelSound(this)" title="Activar sonido">🔇</button>
+                        </div>
+                        <div class="video-reel-meta" style="padding: 16px 0 0; background: transparent; border: none;">
+                            <h4 class="reel-title" style="font-size: 1.12rem; margin-bottom: 4px;">Errores en Streaming</h4>
+                            <p class="reel-desc" style="font-size: 0.86rem;">Reconoce las fallas más frecuentes que frenan tus ingresos y cómo convertirlas en metas.</p>
+                        </div>
+                    </div>
+
+                    <!-- Video Reel 3: Errores de Novatas -->
+                    <div class="video-reel-card scroll-reveal delay-3">
+                        <div class="video-reel-container">
+                            <video class="reel-video-element" loop playsinline preload="metadata">
+                                <source src="public/videos/tips_errores_novatas.mp4" type="video/mp4">
+                            </video>
+                            <button class="btn-reel-play" onclick="toggleReelPlay(this)">
+                                <span class="play-icon">▶</span>
+                            </button>
+                            <button class="btn-reel-sound-toggle" onclick="toggleReelSound(this)" title="Activar sonido">🔇</button>
+                        </div>
+                        <div class="video-reel-meta" style="padding: 16px 0 0; background: transparent; border: none;">
+                            <h4 class="reel-title" style="font-size: 1.12rem; margin-bottom: 4px;">Errores de Novatas</h4>
+                            <p class="reel-desc" style="font-size: 0.86rem;">Protege tus datos, cuida tus límites y evita los tropiezos típicos al iniciar en la industria.</p>
+                        </div>
+                    </div>
+
+                    <!-- Video Reel 4: Ángulos de Cámara -->
+                    <div class="video-reel-card scroll-reveal delay-4">
+                        <div class="video-reel-container">
+                            <video class="reel-video-element" loop playsinline preload="metadata">
+                                <source src="public/videos/tips_angulos_camara.mp4" type="video/mp4">
+                            </video>
+                            <button class="btn-reel-play" onclick="toggleReelPlay(this)">
+                                <span class="play-icon">▶</span>
+                            </button>
+                            <button class="btn-reel-sound-toggle" onclick="toggleReelSound(this)" title="Activar sonido">🔇</button>
+                        </div>
+                        <div class="video-reel-meta" style="padding: 16px 0 0; background: transparent; border: none;">
+                            <h4 class="reel-title" style="font-size: 1.12rem; margin-bottom: 4px;">Ángulos de Cámara</h4>
+                            <p class="reel-desc" style="font-size: 0.86rem;">Encuadre, perspectiva e iluminación estratégica para resaltar tus mejores atributos en vivo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PREGUNTAS FRECUENTES (INTEGRADA CON AUTO-PLAY Y POP ZOOM 1.15X) -->
+            <div class="privacy-faq-video-block scroll-reveal" style="margin-top: 100px; border-top: 1px solid var(--border-dark); padding-top: 80px;">
+                <div class="faq-video-inner-grid">
+                    <div class="video-reel-card scroll-pop-reel" style="width: 100%; max-width: 360px; margin: 0 auto;">
+                        <div class="video-reel-container" style="height: 480px;">
+                            <video class="reel-video-element" loop playsinline preload="metadata" muted>
+                                <source src="public/videos/Estas preguntas no las hacen con frecuencia, HOY te las respondemos y ahora que ya lo sabes….¿Ag.mp4" type="video/mp4">
+                            </video>
+                            <button class="btn-reel-play" onclick="toggleReelPlay(this)">
+                                <span class="play-icon">▶</span>
+                            </button>
+                            <button class="btn-reel-sound-toggle" onclick="toggleReelSound(this)" title="Activar sonido">🔇</button>
+                        </div>
+                    </div>
+                    <div class="faq-video-info" style="display: flex; flex-direction: column; justify-content: center;">
+                        <h3 class="section-heading-serif" style="font-size: 2.3rem; margin: 0 0 16px;">Preguntas Frecuentes Resueltas</h3>
+                        <p style="font-size: 1.05rem; color: #C8C5BC; line-height: 1.7; margin-bottom: 24px;">
+                            Resolvemos de frente las dudas más comunes sobre pagos, anonimato, geobloqueo y el día a día en el estudio. Sin letra pequeña ni rodeos.
+                        </p>
+                        <ul class="comp-list" style="margin-bottom: 28px;">
+                            <li>— ¿Mi familia o conocidos en Armenia pueden verme? <strong>No, geobloqueo activo 100%.</strong></li>
+                            <li>— ¿Necesito experiencia previa o inglés? <strong>No, te capacitamos desde cero.</strong></li>
+                            <li>— ¿Cómo se manejan los pagos? <strong>Quincenales, en divisas y con soporte bancario.</strong></li>
+                        </ul>
+                        <div>
+                            <button onclick="openApplicationModal()" class="nav-cta-btn magnetic-element" style="display: inline-block; padding: 14px 30px;">Agendar Entrevista Confidencial</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- ACTO IV — LA EXPERIENCIA: FASES & HORARIOS (SÓLIDA)     -->
+        <!-- ======================================================= -->
+        <section id="the-experience" class="experience-narrative-section section-solid">
+            <div class="section-editorial-title-row scroll-reveal" style="max-width: 1440px; margin: 0 auto 64px;">
+                <div>
+                    <h2 class="section-heading-serif">La Experiencia JD GROUP</h2>
+                </div>
+                <p style="max-width: 480px;">Un proceso estructurado desde el día uno: seguridad, entrenamiento, monetización y consolidación patrimonial.</p>
+            </div>
+
+            <!-- GRID LUXURY DE 4 ETAPAS CON ALTO CONTRASTE -->
+            <div class="experience-luxury-grid">
+                <div class="exp-luxury-card scroll-reveal delay-1">
+                    <span class="exp-card-roman">I</span>
+                    <h4 class="exp-card-title">Espacio Seguro & Respeto</h4>
+                    <p class="exp-card-desc">Ambiente 100% libre de prejuicios con instalaciones privadas, lockers biométricos y protocolos confidenciales de acceso.</p>
+                </div>
+                <div class="exp-luxury-card scroll-reveal delay-2">
+                    <span class="exp-card-roman">II</span>
+                    <h4 class="exp-card-title">Identidad & Geobloqueo</h4>
+                    <p class="exp-card-desc">Configuración estricta de bloqueo territorial para Colombia y creación de tu alias artístico para total tranquilidad.</p>
+                </div>
+                <div class="exp-luxury-card scroll-reveal delay-3">
+                    <span class="exp-card-roman">III</span>
+                    <h4 class="exp-card-title">Horario Estratégico</h4>
+                    <p class="exp-card-desc">Elección analítica entre turnos diurnos o nocturnos según tu disponibilidad, estilo de transmisión y zonas horarias internacionales.</p>
+                </div>
+                <div class="exp-luxury-card scroll-reveal delay-4">
+                    <span class="exp-card-roman">IV</span>
+                    <h4 class="exp-card-title">Escalafón & Independencia</h4>
+                    <p class="exp-card-desc">Crecimiento porcentual continuo (30% al 70% por tokens) con liquidaciones quincenales exactas y asesoría en finanzas personales.</p>
+                </div>
+            </div>
+
+            <!-- ELECCIÓN ESTRATÉGICA DE HORARIOS EN BOXES LUXURY -->
+            <div class="schedule-header-row scroll-reveal" style="max-width: 1200px; margin: 0 auto 40px; text-align: center;">
+                <h3 class="section-heading-serif" style="font-size: 2.4rem; margin-bottom: 12px;">Elección de Horario: Noche vs. Día</h3>
+                <p style="color: #C8C5BC; font-size: 1.05rem; max-width: 620px; margin: 0 auto;">El horario que elijas determina el tipo de audiencia, la competencia activa y el ritmo de interacción de tu sala.</p>
+            </div>
+
+            <div class="schedule-luxury-cards scroll-reveal">
+                <div class="schedule-lux-box">
+                    <h4 class="schedule-lux-title">Turno Nocturno (Sede Granada)</h4>
+                    <p class="schedule-lux-lead">Mayor disposición de gasto y shows privados de alto valor.</p>
+                    <ul class="schedule-lux-list">
+                        <li>Menos competencia activa en las plataformas principales.</li>
+                        <li>Usuarios con mayor disposición a shows privados exclusivos.</li>
+                        <li>Demanda adaptación a ciclos de descanso diurnos.</li>
+                    </ul>
+                </div>
+                <div class="schedule-lux-box">
+                    <h4 class="schedule-lux-title">Turno Diurno / Tardes (Mocawa & Granada)</h4>
+                    <p class="schedule-lux-lead">Constancia, conexión con Europa y ritmo de vida natural.</p>
+                    <ul class="schedule-lux-list">
+                        <li>Sincronización óptima con el horario estelar europeo.</li>
+                        <li>Permite mantener vida social y familiar estándar en Armenia.</li>
+                        <li>Mayor volumen constante de usuarios y propinas colectivas.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- ACTO V — PRIVACIDAD & PROTOCOLOS (INCÓGNITO DE CHROME)  -->
+        <!-- ======================================================= -->
+        <section id="privacy" class="privacy-editorial-section section-transparent">
+            <div class="privacy-container scroll-reveal">
+                <div style="text-align: center; max-width: 860px; margin: 0 auto 50px;">
+                    <h2 class="privacy-incognito-title">
+                        <svg class="chrome-incognito-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.5 2 7.5 4.5 7.5 4.5L4 8h16l-3.5-3.5S15.5 2 12 2zm-8.5 7v1.5h17V9h-17zm3 3.5c-1.9 0-3.5 1.6-3.5 3.5s1.6 3.5 3.5 3.5 3.5-1.6 3.5-3.5-1.6-3.5-3.5-3.5zm11 0c-1.9 0-3.5 1.6-3.5 3.5s1.6 3.5 3.5 3.5 3.5-1.6 3.5-3.5-1.6-3.5-3.5-3.5zm-11 1.5c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm11 0c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm-6.5 1.5h2v1h-2v-1z"/>
+                        </svg>
+                        <span>Privacidad Absoluta</span>
+                        <svg class="chrome-incognito-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.5 2 7.5 4.5 7.5 4.5L4 8h16l-3.5-3.5S15.5 2 12 2zm-8.5 7v1.5h17V9h-17zm3 3.5c-1.9 0-3.5 1.6-3.5 3.5s1.6 3.5 3.5 3.5 3.5-1.6 3.5-3.5-1.6-3.5-3.5-3.5zm11 0c-1.9 0-3.5 1.6-3.5 3.5s1.6 3.5 3.5 3.5 3.5-1.6 3.5-3.5-1.6-3.5-3.5-3.5zm-11 1.5c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm11 0c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm-6.5 1.5h2v1h-2v-1z"/>
+                        </svg>
+                    </h2>
+                    <p class="manifesto-note" style="max-width: 760px; margin: 0 auto;">
+                        Tu identidad civil está blindada en cada nivel de nuestra operación. Geobloqueo estricto, anonimato bancario e instalaciones privadas en Armenia sin avisos exteriores.
+                    </p>
+                </div>
+
+                <!-- PILARES DE PRIVACIDAD EN TARJETAS DE ALTA DEFINICIÓN -->
+                <div class="privacy-pillars-grid">
+                    <div class="privacy-pillar-card scroll-reveal delay-1">
+                        <h4 class="privacy-pillar-title">🛡️ Geobloqueo 100% para Colombia</h4>
+                        <p class="privacy-pillar-desc">Ninguna persona dentro de Colombia podrá ver tus transmisiones, perfiles o grabaciones. Tu presencia digital se emite exclusivamente a mercados internacionales.</p>
+                    </div>
+
+                    <div class="privacy-pillar-card scroll-reveal delay-2">
+                        <h4 class="privacy-pillar-title">🎭 Identidad Protegida por Alias</h4>
+                        <p class="privacy-pillar-desc">Tu nombre real, documentos de identidad y datos privados se almacenan bajo estricta confidencialidad según la Ley 1581 de Habeas Data.</p>
+                    </div>
+
+                    <div class="privacy-pillar-card scroll-reveal delay-3">
+                        <h4 class="privacy-pillar-title">💳 Discreción Bancaria & Pagos</h4>
+                        <p class="privacy-pillar-desc">Tus honorarios se liquidan quincenalmente mediante transferencias directas sin conceptos explícitos, garantizando total tranquilidad ante entidades financieras.</p>
+                    </div>
+
+                    <div class="privacy-pillar-card scroll-reveal delay-4">
+                        <h4 class="privacy-pillar-title">🏛️ Instalaciones Privadas en Armenia</h4>
+                        <p class="privacy-pillar-desc">Nuestras sedes en Armenia no tienen letreros ni avisos exteriores. Cuentan con parqueadero privado y acceso biométrico confidencial para tu seguridad.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- ACTO VI — EL ÉXITO NO ES IMPROVISACIÓN (TRANSPARENTE)   -->
+        <!-- ======================================================= -->
+        <section class="manifesto-section section-transparent" style="padding-top: 110px; padding-bottom: 130px;">
+            <div class="manifesto-container scroll-reveal">
+                <blockquote class="manifesto-quote">
+                    “El éxito en el modelaje no es improvisación; es <em>estrategia, disciplina y respaldo profesional</em>.”
+                </blockquote>
+                <p class="manifesto-note" style="margin-bottom: 50px;">
+                    Desde Armenia, Quindío, JD GROUP ha transformado la industria del modelaje webcam creando un entorno seguro, profesional e inclusivo. Aquí el talento florece sin discriminación y con el respaldo integral de un equipo que cuida cada detalle de tu carrera.
+                </p>
+
+                <!-- MODELO ESTUDIO VS INDEPENDIENTE -->
+                <div class="model-comparison-block scroll-reveal">
+                    <div class="anniversary-header-row" style="text-align: center; margin-bottom: 40px;">
+                        <h3 class="anniversary-title">Estudio Profesional vs. Modelo Satélite</h3>
+                        <p class="anniversary-lead">
+                            Descubre por qué formar parte de nuestra productora multiplica tu rendimiento frente al trabajo solitario en casa.
+                        </p>
+                    </div>
+
+                    <div class="comparison-grid">
+                        <div class="comp-col comp-studio">
+                            <h4 class="comp-col-title">En JD GROUP (Estudio Profesional)</h4>
+                            <ul class="comp-list">
+                                <li>— Cero inversión en equipos: cámaras 4K, microfonía y PC de cine.</li>
+                                <li>— Soporte psicológico y monitoreo técnico activo en vivo.</li>
+                                <li>— Geobloqueo estricto para Colombia y protección de datos.</li>
+                                <li>— Disciplina, rutinas de alto valor y asesoría en vestuario y set.</li>
+                                <li>— Pagos quincenales exactos en divisas y soporte bancario.</li>
+                            </ul>
+                        </div>
+                        <div class="comp-col comp-satellite">
+                            <h4 class="comp-col-title">Como Modelo Satélite (En Casa)</h4>
+                            <ul class="comp-list">
+                                <li>— Alto costo inicial en hardware, iluminación y conectividad.</li>
+                                <li>— Aislamiento emocional y falta de guía en momentos de bajo tráfico.</li>
+                                <li>— Riesgo de filtraciones por configuraciones incorrectas de IP.</li>
+                                <li>— Dificultad para mantener constancia y horarios de alta audiencia.</li>
+                                <li>— Gestión bancaria compleja y comisiones elevadas de retiro.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- ACTO VII — TRABAJA CON NOSOTROS / POSTULACIÓN (SÓLIDA)  -->
+        <!-- ======================================================= -->
+        <section class="final-cinematic-cta-section section-solid" style="padding-top: 120px; padding-bottom: 120px;">
+            <div class="final-cta-grid">
+                <div class="video-reel-card scroll-pop-reel" style="width: 100%; max-width: 360px; margin: 0 auto;">
+                    <div class="video-reel-container" style="height: 480px;">
+                        <video class="reel-video-element" loop playsinline preload="metadata" muted>
+                            <source src="public/videos/Estás en busca de una oportunidad laboral que cumpla tus expectativas 🤓¿Agendamos una entrevist.mp4" type="video/mp4">
+                        </video>
+                        <button class="btn-reel-play" onclick="toggleReelPlay(this)">
+                            <span class="play-icon">▶</span>
+                        </button>
+                        <button class="btn-reel-sound-toggle" onclick="toggleReelSound(this)" title="Activar sonido">🔇</button>
+                    </div>
+                    <div class="video-reel-meta" style="padding: 16px 0 0; background: transparent; border: none;">
+                        <h4 class="reel-title" style="font-size: 1.15rem; margin-bottom: 4px;">¿Agendamos una Entrevista?</h4>
+                        <p class="reel-desc" style="font-size: 0.88rem;">Conoce nuestras instalaciones y da el primer paso hacia tu independencia.</p>
+                    </div>
+                </div>
+
+                <div class="final-cta-text-content" style="display: flex; flex-direction: column; justify-content: center;">
+                    <h2 class="section-heading-serif" style="font-size: 3.2rem; margin: 0 0 20px;">
+                        Construye tu autonomía con el respaldo de JD GROUP.
+                    </h2>
+                    <p style="font-size: 1.1rem; color: #C8C5BC; line-height: 1.75; margin-bottom: 32px;">
+                        Proceso de postulación 100% discreto, confidencial y sin discriminación. Atención cercana, personalizada y con acompañamiento integral desde el primer día.
+                    </p>
+                    <div>
+                        <button onclick="openApplicationModal()" class="btn-submit-interview magnetic-element" style="margin-top: 0; padding: 18px 36px;">
+                            Solicitar Entrevista Confidencial
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ======================================================= -->
+    <!-- MODAL EMERGENTE DE POSTULACIÓN CONFIDENCIAL (SPLIT)     -->
+    <!-- ======================================================= -->
+    <div id="applicationModal" class="application-modal-overlay" onclick="if(event.target === this) closeApplicationModal()">
+        <div class="application-modal-dialog">
+            <button class="modal-close-btn" onclick="closeApplicationModal()" title="Cerrar (ESC)">×</button>
+
+            <div class="modal-split-layout">
+                <!-- Columna Izquierda: Video de Oportunidad Laboral con Auto-Play -->
+                <div class="modal-video-col">
+                    <div class="video-reel-card scroll-pop-reel" style="width: 100%;">
+                        <div class="video-reel-container" style="height: 440px;">
+                            <video class="reel-video-element" loop playsinline preload="metadata" muted>
+                                <source src="public/videos/Estás en busca de una oportunidad laboral que cumpla tus expectativas 🤓¿Agendamos una entrevist.mp4" type="video/mp4">
+                            </video>
+                            <button class="btn-reel-play" onclick="toggleReelPlay(this)">
+                                <span class="play-icon">▶</span>
+                            </button>
+                            <button class="btn-reel-sound-toggle" onclick="toggleReelSound(this)" title="Activar sonido">🔇</button>
+                        </div>
+                        <div class="video-reel-meta" style="padding: 16px 0 0; background: transparent; border: none;">
+                            <h4 class="reel-title" style="font-size: 1.15rem;">¿Agendamos una Entrevista?</h4>
+                            <p class="reel-desc" style="font-size: 0.85rem;">Conoce nuestras instalaciones en Armenia y da el primer paso hacia tu independencia.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Formulario Confidencial -->
+                <div class="modal-form-col">
+                    <h2 class="app-title-center" style="font-size: 2.1rem; text-align: left; margin-bottom: 8px;">Postulación Confidencial</h2>
+                    <p class="app-subtitle-center" style="font-size: 0.95rem; text-align: left; margin-bottom: 28px;">Proceso seguro, privado y sin discriminación en Armenia.</p>
+
+                    <form id="houseApplicationForm" onsubmit="handleHouseSubmit(event)">
+                        <div class="app-input-row-2">
+                            <div>
+                                <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">Nombre o Alias *</label>
+                                <input type="text" id="appNombre" class="app-input-field" placeholder="Ej: Isabella / Mateo" required>
+                            </div>
+                            <div>
+                                <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">WhatsApp de Contacto *</label>
+                                <input type="tel" id="appWhatsapp" class="app-input-field" placeholder="Ej: +57 300 123 4567" required>
+                            </div>
+                        </div>
+
+                        <div class="app-input-row-2">
+                            <div>
+                                <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">Edad Confirmada (+18) *</label>
+                                <input type="number" id="appEdad" class="app-input-field" min="18" max="60" value="21" required>
+                            </div>
+                            <div>
+                                <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">Identidad / Categoría *</label>
+                                <select id="appCategoria" class="app-input-field">
+                                    <option value="Mujer">Talento Femenino (Mujer)</option>
+                                    <option value="Hombre">Talento Masculino (Hombre)</option>
+                                    <option value="Trans">Talento Trans / No Binario</option>
+                                    <option value="Pareja">Pareja / Diversidad</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="app-input-row-2">
+                            <div>
+                                <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">Ciudad</label>
+                                <select id="appCiudad" class="app-input-field">
+                                    <option value="Armenia">Armenia</option>
+                                    <option value="Calarcá">Calarcá</option>
+                                    <option value="Circasia">Circasia</option>
+                                    <option value="Pereira">Pereira</option>
+                                    <option value="Manizales">Manizales</option>
+                                    <option value="Otra">Otra (Eje Cafetero)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">Experiencia Previa</label>
+                                <select id="appExperiencia" class="app-input-field">
+                                    <option value="Sin Experiencia">No, quiero empezar desde cero</option>
+                                    <option value="Con Experiencia">Sí, ya he transmitido antes</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 18px;">
+                            <label style="font-size: 0.78rem; color: var(--color-stone); display: block; margin-bottom: 5px;">Preguntas o Comentarios</label>
+                            <textarea id="appComentarios" class="app-input-field" rows="2" placeholder="Dudas sobre horarios, porcentajes, sedes o acompañamiento..."></textarea>
+                        </div>
+
+                        <!-- CHECKBOX LUXURY PERSONALIZADO -->
+                        <div class="luxury-habeas-container">
+                            <label class="luxury-checkbox-label">
+                                <input type="checkbox" id="appHabeas" required class="luxury-checkbox-input">
+                                <span class="luxury-checkbox-custom"></span>
+                                <span class="luxury-checkbox-text">
+                                    Autorizo el tratamiento confidencial de mis datos personales conforme a la <strong>Ley 1581 de 2012 (Habeas Data)</strong>. Confirmo que soy mayor de 18 años.
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- BOTÓN DE ENVÍO CLARO Y PROMINENTE -->
+                        <button type="submit" id="btnSubmitApp" class="btn-submit-interview magnetic-element" style="width: 100%; margin-top: 8px; padding: 18px; font-size: 0.95rem;">
+                            Solicitar Entrevista Confidencial
+                        </button>
+                    </form>
+
+                    <!-- Feedback de Radicado -->
+                    <div id="appSuccessVoucher" style="display: none; text-align: center; padding-top: 20px;">
+                        <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-champagne); letter-spacing: 2px;">CÓDIGO DE RADICADO PRIVADO</span>
+                        <h3 id="lblAppRadicado" style="font-family: var(--font-mono); font-size: 1.9rem; color: var(--color-ivory); margin: 6px 0 14px;">AXM-000000</h3>
+                        <p style="color: var(--color-stone); font-size: 0.9rem; margin-bottom: 18px;">Tu solicitud ha sido registrada de forma segura. Te contactaremos con total reserva.</p>
+                        <a id="btnAppWa" href="#" target="_blank" class="nav-cta-btn magnetic-element" style="display: inline-block; padding: 12px 24px;">Iniciar Chat en WhatsApp Concierge</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+        <p class="footer-bottom-copy">
+            © 2026 JD GROUP AXM. TODOS LOS DERECHOS RESERVADOS.
+        </p>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <!-- BOTÓN FLOTANTE SOCIAL SPEED-DIAL (REDES SOCIALES) -->
+    <div class="floating-social-hub" id="floatingSocialHub">
+        <div class="social-popout-menu">
+            <!-- WhatsApp (Verde Oficial) -->
+            <a href="https://wa.me/573001234567" target="_blank" rel="noopener" class="social-sub-btn btn-social-wa" title="WhatsApp Concierge">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                    <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.587 1.961.947 3.03.947h.005c3.182 0 5.767-2.586 5.768-5.766 0-1.54-.599-2.988-1.688-4.077-1.09-1.089-2.538-1.688-4.319-1.688zm9.969 5.766c0 5.514-4.486 10-10 10-1.748 0-3.387-.45-4.818-1.238l-4.782 1.252 1.275-4.661c-.868-1.488-1.375-3.224-1.375-5.053 0-5.514 4.486-10 10-10s10 4.486 10 10z"/>
+                </svg>
+            </a>
+            <!-- Instagram (Gradiente Oficial) -->
+            <a href="https://instagram.com/jdgroupaxm" target="_blank" rel="noopener" class="social-sub-btn btn-social-ig" title="Instagram Oficial">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+            </a>
+            <!-- TikTok (Cian / Magenta Oficial) -->
+            <a href="https://tiktok.com/@jdgroupaxm" target="_blank" rel="noopener" class="social-sub-btn btn-social-tt" title="TikTok Oficial">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-1.01v8.86c0 1.75-.43 3.51-1.39 4.95-1.33 2.01-3.64 3.32-6.07 3.5-1.89.15-3.83-.34-5.41-1.4-2.02-1.37-3.26-3.66-3.44-6.07-.22-2.91 1.25-5.83 3.75-7.3 1.34-.78 2.92-1.18 4.47-1.17v4.07c-1.08-.04-2.2.32-3 1.05-.88.8-1.35 1.99-1.28 3.17.06 1.18.66 2.29 1.63 2.96.98.68 2.27.84 3.42.44 1.03-.36 1.87-1.24 2.19-2.27.18-.58.26-1.19.26-1.8V.02z"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Botón Disparador Principal -->
+        <button class="social-main-trigger" aria-label="Abrir Redes Sociales">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+        </button>
+    </div>
+
+</body>
+</html>
