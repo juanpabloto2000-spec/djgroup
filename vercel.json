@@ -1,6 +1,10 @@
 {
   "version": 2,
   "cleanUrls": true,
+  "framework": null,
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "installCommand": null,
   "rewrites": [
     { "source": "/sedes", "destination": "/sedes.html" },
     { "source": "/modelos", "destination": "/modelos.html" }
