@@ -2832,25 +2832,218 @@ p {
 }
 
 @media (max-width: 1024px) {
-    .hero-monumental-headline { font-size: 3.8rem; }
+    .navbar-inner { padding: 0 28px !important; }
+    .hero-monumental-headline { font-size: clamp(3.0rem, 6.5vw, 4.2rem) !important; }
     .space-editorial-card, .space-editorial-card.reverse, .experience-grid-4, .talent-triptych-grid, .craft-grid-3, .privacy-layout-grid, .opportunity-grid, .footer-top-grid,
-    .anniversary-photos-grid, .comparison-columns-grid, .music-moods-grid, .video-reels-grid, .schedule-grid-2, .faq-video-inner-grid, .application-layout-grid {
-        grid-template-columns: 1fr;
+    .anniversary-photos-grid, .comparison-columns-grid, .music-moods-grid, .video-reels-grid, .schedule-grid-2, .faq-video-inner-grid, .application-layout-grid, .sets-editorial-grid {
+        grid-template-columns: 1fr !important;
     }
-    .app-video-sidebar { position: static; margin-bottom: 40px; }
-    .app-input-row-2 { grid-template-columns: 1fr; }
-    .nav-links-menu { display: none; }
+    .app-video-sidebar { position: static !important; margin-bottom: 36px !important; }
+    .app-input-row-2 { grid-template-columns: 1fr !important; }
+    .nav-links-menu { display: none !important; }
 }
 
 @media (max-width: 768px) {
-    .hero-monumental-headline { font-size: 2.8rem; }
-    .manifesto-quote { font-size: 2.2rem; }
-    .section-heading-serif { font-size: 2.4rem; }
-    .anniversary-headline { font-size: 2rem; }
-    .model-comparison-card { padding: 36px 20px; }
-    .schedule-strategy-card { padding: 36px 20px; }
-    .faq-video-inner-grid { padding: 24px; }
-    .application-card-monolith { padding: 40px 24px; }
-    .anniversary-img { height: 280px; }
-    .video-reel-container { height: 380px; }
+    /* NAVEGACIÓN COMPACTA */
+    .navbar-inner {
+        padding: 0 16px !important;
+    }
+    .navbar-brand-logo {
+        height: 48px !important;
+        max-width: 110px !important;
+    }
+    .nav-cta-btn {
+        padding: 8px 14px !important;
+        font-size: 0.72rem !important;
+        letter-spacing: 1.2px !important;
+    }
+
+    /* HERO FLUIDO */
+    .hero-breathing-stage {
+        min-height: 88vh !important;
+        padding: 64px 16px 36px !important;
+    }
+    .hero-monumental-headline {
+        font-size: clamp(2.1rem, 8.8vw, 3.2rem) !important;
+        line-height: 1.14 !important;
+        margin-bottom: 16px !important;
+    }
+    .hero-editorial-lead {
+        font-size: clamp(0.92rem, 3.6vw, 1.05rem) !important;
+        line-height: 1.65 !important;
+        margin-bottom: 24px !important;
+    }
+    .hero-cta-group {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 12px !important;
+    }
+    .hero-cta-group .nav-cta-btn,
+    .hero-cta-group .btn-submit-interview {
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    /* TIPOGRAFÍA & SECCIONES GENERALES */
+    .manifesto-quote {
+        font-size: clamp(1.4rem, 5.2vw, 2.1rem) !important;
+        line-height: 1.35 !important;
+    }
+    .section-heading-serif {
+        font-size: clamp(1.8rem, 6.2vw, 2.6rem) !important;
+        line-height: 1.2 !important;
+    }
+    .anniversary-headline {
+        font-size: clamp(1.6rem, 5.5vw, 2.2rem) !important;
+    }
+    .anniversary-split-container {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+        padding: 0 !important;
+    }
+    .anniversary-photo-card img {
+        max-height: 360px !important;
+        width: 100% !important;
+        object-fit: cover !important;
+        object-position: top center !important;
+    }
+
+    /* PADDINGS DE SECCIÓN CALIBRADOS */
+    .experience-section,
+    .sanctuary-section,
+    .manifesto-section,
+    .music-strategy-block,
+    .mentorship-videos-block,
+    .final-cinematic-cta-section,
+    .talent-editorial-section,
+    .opportunity-section,
+    .toys-boutique-block,
+    .privacy-sanctuary-section,
+    .application-section {
+        padding: 56px 16px !important;
+    }
+
+    /* CÁPSULAS DE VIDEO 9:16 CINEMÁTICAS */
+    .video-reels-grid,
+    .music-moods-grid,
+    .toys-grid-4,
+    .craft-grid-3,
+    .talent-triptych-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    .video-reel-card {
+        max-width: 320px !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        padding: 14px !important;
+    }
+    .video-reel-container {
+        height: auto !important;
+        aspect-ratio: 9/16 !important;
+        max-height: 480px !important;
+        width: 100% !important;
+        border-radius: 4px !important;
+    }
+    .reel-video-element {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+    .btn-reel-play {
+        width: 52px !important;
+        height: 52px !important;
+    }
+    .btn-reel-sound-toggle {
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 16px !important;
+    }
+
+    /* MODAL DE POSTULACIÓN TÁCTIL */
+    .application-modal-dialog {
+        padding: 24px 16px !important;
+        width: calc(100% - 20px) !important;
+        max-height: 92vh !important;
+        margin: 10px auto !important;
+    }
+    .modal-split-layout {
+        grid-template-columns: 1fr !important;
+        gap: 18px !important;
+    }
+    .modal-video-col {
+        display: none !important;
+    }
+    .app-input-row-2 {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    .app-input-field {
+        font-size: 16px !important; /* Previene auto-zoom involuntario en iOS */
+        padding: 14px 16px !important;
+    }
+    .luxury-checkbox-text {
+        font-size: 0.76rem !important;
+        line-height: 1.4 !important;
+    }
+
+    /* CALCULADORA DE GANANCIAS EN MÓVIL */
+    .opportunity-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    .calc-box-editorial,
+    .result-card-minimal {
+        padding: 24px 16px !important;
+    }
+    .scale-stages-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+    }
+    .scale-stages-grid .stage-tab-btn:last-child {
+        grid-column: 1 / -1 !important;
+    }
+    .res-usd-monument {
+        font-size: clamp(2.4rem, 8vw, 3.2rem) !important;
+    }
+    .res-cop-equiv {
+        font-size: 1.15rem !important;
+    }
+
+    /* BOTÓN FLOTANTE SOCIAL */
+    .floating-social-hub {
+        bottom: 16px !important;
+        left: 16px !important;
+    }
+    .social-main-trigger {
+        width: 52px !important;
+        height: 52px !important;
+    }
+    .social-sub-btn {
+        width: 44px !important;
+        height: 44px !important;
+    }
+    .social-popout-menu {
+        bottom: 58px !important;
+    }
+
+    /* AGE GATE MODAL */
+    .age-gate-dialog {
+        padding: 26px 16px !important;
+        width: calc(100% - 24px) !important;
+        max-height: 90vh !important;
+    }
+    .age-gate-title {
+        font-size: 1.55rem !important;
+    }
+    .age-gate-actions {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 10px !important;
+    }
+    .btn-age-confirm,
+    .btn-age-deny {
+        width: 100% !important;
+        padding: 14px !important;
+    }
 }

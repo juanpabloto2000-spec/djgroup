@@ -858,6 +858,7 @@ function initFixedWatermarkVisibility() {
 function initFloatingSocialHub() {
     const hub = document.getElementById('floatingSocialHub');
     if (!hub) return;
+    const trigger = hub.querySelector('.social-main-trigger');
 
     let closeTimeout = null;
 
@@ -870,5 +871,18 @@ function initFloatingSocialHub() {
         closeTimeout = setTimeout(() => {
             hub.classList.remove('is-open');
         }, 400); // 400ms buffer prevents accidental closure while moving across icons
+    });
+
+    if (trigger) {
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            hub.classList.toggle('is-open');
+        });
+    }
+
+    document.addEventListener('click', (e) => {
+        if (!hub.contains(e.target)) {
+            hub.classList.remove('is-open');
+        }
     });
 }
