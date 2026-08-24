@@ -886,3 +886,20 @@ function initFloatingSocialHub() {
         }
     });
 }
+
+// ==========================================================================
+// 19. NAVEGACIÓN ESPECIALIZADA PARA MÓVIL (DRAWER LUXURY)
+// ==========================================================================
+function toggleMobileNav(open) {
+    const drawer = document.getElementById('mobileNavDrawer');
+    if (!drawer) return;
+    if (open) {
+        drawer.classList.add('is-active');
+        drawer.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    } else {
+        drawer.classList.remove('is-active');
+        drawer.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+}
